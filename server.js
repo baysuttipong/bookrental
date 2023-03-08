@@ -9,8 +9,23 @@ app.use(bodyParser.json());
 app.use(cors());
 
 // Routes
-app.get('/', (req, res) => {
-  res.send('Hello, World!');
+const books = require('./books.json');
+
+app.get('/books', (req, res) => {
+  res.json(books);
+});
+
+app.post('/books', (req, res) => {
+  const newBook = req.body;
+  books.push(newBook);
+  res.json(newBook);
+});
+
+app.delete('/books/:id', (req, res) => {
+  const id = parseInt(req.params.id);
+  const index = books.findIndex(book => book.id === id);
+  books.splice(index, 1);
+  res.json(id);
 });
 
 // Start server
